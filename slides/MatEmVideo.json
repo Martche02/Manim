@@ -1,0 +1,18 @@
+{
+  "slides": [
+    {
+      "type": "last",
+      "start_animation": 0,
+      "end_animation": 1,
+      "number": 1
+    }
+  ],
+  "files": [
+    "slides\\files\\MatEmVideo\\1413466013_3315967912_3219540118.mp4"
+  ],
+  "resolution": [
+    1920,
+    1080
+  ],
+  "background_color": "black"
+}

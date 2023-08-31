@@ -1,24 +1,27 @@
 from manim import *
+from manim_slides import Slide
 import math
 ADDER_COLOR=GREEN
 MULT_COLOR=YELLOW
 ROTT_COLOR=RED
-class NumberLineExample(Scene):
+class MatEmVideo(Scene): #Scene or Slide
     def rotate_vector(self, vector, angle):
         x = vector[0] * math.cos(angle) - vector[1] * math.sin(angle)
         y = vector[0] * math.sin(angle) + vector[1] * math.cos(angle)
         return [x, y, 0]
     def stretch(self, factor, *args, **kwargs):
-        line = self.numberline if len(args)==0 else args[0]
+        line = self.number_line if len(args)==0 else args[0]
         zero_point = line.number_to_point(0)  
         target = line.copy()
-        target.stretch(factor, 1)
+        # target.stretch(factor, 0)
+        print(line.get_unit_vector())
+        for d in [0,1,2]:
+            target.stretch_about_point(factor, d, zero_point) if line.get_unit_vector()[d] >0.1 else 0
         arrow = Arrow(line.number_to_point(1), line.number_to_point(factor), buff = 0)
         arrow.set_color(MULT_COLOR)
         self.play(Create(arrow))
         self.wait()
-        self.play(arrow.animate.shift(MED_LARGE_BUFF*2*np.array(self.rotate_vector([line.number_to_point(1)[0]-line.number_to_point(0)[0],
-                                                                        line.number_to_point(1)[1]-line.number_to_point(0)[1]], PI/2))))
+        self.play(arrow.animate.shift(MED_LARGE_BUFF*2*np.array(self.rotate_vector(line.get_unit_vector(), PI/2))))
         self.wait()
         if hasattr(target, 'numbers'):
             for number in target.numbers:
@@ -28,15 +31,14 @@ class NumberLineExample(Scene):
         *kwargs.get("added_anims", []))
         self.play(FadeOut(arrow))
     def show_example_slides(self, num, *args):
-        line = self.numberline if len(args)==0 else args[0]
+        line = self.number_line if len(args)==0 else args[0]
         zero_point = line.number_to_point(0)            
         num_point = line.number_to_point(num)
         arrow = Arrow(zero_point, num_point, buff = 0)
         arrow.set_color(ADDER_COLOR)
         self.play(Create(arrow))
         self.wait()
-        self.play(arrow.animate.shift(MED_LARGE_BUFF*2*np.array(self.rotate_vector([line.number_to_point(1)[0]-line.number_to_point(0)[0],
-                                                                        line.number_to_point(1)[1]-line.number_to_point(0)[1]], PI/2))))
+        self.play(arrow.animate.shift(MED_LARGE_BUFF*2*np.array(self.rotate_vector(line.get_unit_vector(), PI/2))))
         self.wait()
         self.play(line.animate.shift(num_point-zero_point))
         self.wait()
@@ -61,11 +63,25 @@ class NumberLineExample(Scene):
         self.play(Create(arrow))
         self.wait()
         self.play(FadeOut(arrow))
+    def relogio(self, horas:int=12):
+        self.circle = Circle(radius=3.0)
+        self.circle.rotate(PI/2)
+        angles = [PI/2-(n+1) * (2*PI / horas) for n in range(horas)]
+        self.points = [self.circle.point_at_angle(n) for n in angles]
+        dots = [LabeledDot(str(p)) for p in range(1,horas+1)]
+        self.add(self.circle)
+        for d in range(horas):
+            dots[d].move_to(self.points[d])
+        self.hours = VGroup(*dots)
+        self.play(Create(self.hours))
+    def rotacionar_relogio(self, horas:int):
+        self.play(*[Transform(self.hours[i], LabeledDot(str(i+1)).move_to(self.points[i+horas]),
+                    path_arc=-horas*2*PI/len(self.hours)) for i in range(len(self.hours)) ])
+        pass
     def construct(self):
         self.number_line = NumberLine([-20,20],include_numbers=True, label_direction=UP)
         self.shadow_line = NumberLine([-20,20],include_numbers=True)
         self.shadow_line.next_to(self.number_line, DOWN*3)
-        self.add(self.number_line)
-        r = self.rotate(PI/2, 2)
-        self.stretch(3.5, r)
+        self.relogio(12)
+        self.rotacionar_relogio(-2)
         self.wait()
