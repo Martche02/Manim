@@ -63,38 +63,25 @@ class MatEmVideo(Scene): #Scene or Slide
         self.play(Create(arrow))
         self.wait()
         self.play(FadeOut(arrow))
-    class Relogio:
-        def __init__(self, selfU, horas:int=12, lap=0):
-            self.selfU = selfU
-            self.horas = horas
-            self.phase = lap
-            self.circle = Circle(radius=3.0)
-            self.hours = self.distCirc(lap)
-            self.selfU.add(self.circle)
-            self.selfU.play(Create(self.hours))
-        def moveCirc(self, lap):
-            self.phase += lap
-            n_hours = self.distCirc(self.phase)
-            self.selfU.play(*[Transform(self.hours[i], n_hours[(i-self.phase)%self.horas],
-                        path_arc=lap*2*PI/len(self.hours)
-                        ) for i in range(len(self.hours))])
-            # self.hours = n_hours
-        def distCirc(self, lap:int=0):
-            angles = [PI/2-(n+1) * (2*PI / self.horas) for n in range(self.horas)]
-            points = [self.circle.point_at_angle(n) for n in angles]
-            dots = [LabeledDot(str((p+lap)%self.horas+1)).move_to(points[p]) for p in range(self.horas)]
-            return VGroup(*dots)
+    def relogio(self, horas:int=12):
+        self.circle = Circle(radius=3.0)
+        self.circle.rotate(PI/2)
+        angles = [PI/2-(n+1) * (2*PI / horas) for n in range(horas)]
+        self.points = [self.circle.point_at_angle(n) for n in angles]
+        dots = [LabeledDot(str(p)) for p in range(1,horas+1)]
+        self.add(self.circle)
+        for d in range(horas):
+            dots[d].move_to(self.points[d])
+        self.hours = VGroup(*dots)
+        self.play(Create(self.hours))
+    def rotacionar_relogio(self, horas:int):
+        self.play(*[Transform(self.hours[i], LabeledDot(str(i+1)).move_to(self.points[i+horas]),
+                    path_arc=-horas*2*PI/len(self.hours)) for i in range(len(self.hours)) ])
+        pass
     def construct(self):
         self.number_line = NumberLine([-20,20],include_numbers=True, label_direction=UP)
         self.shadow_line = NumberLine([-20,20],include_numbers=True)
-        # self.shadow_line.next_to(self.number_line, DOWN*3)
-        r = self.Relogio(self, 12)
-        # self.Relogio.moveCirc(r, 2)
-        self.wait()
-        r.moveCirc(2)
-        self.wait()
-        r.moveCirc(-4)
-        self.wait()
-        r.moveCirc(2)
-        # self.torre = arrow(
+        self.shadow_line.next_to(self.number_line, DOWN*3)
+        self.relogio(12)
+        self.rotacionar_relogio(-2)
         self.wait()
