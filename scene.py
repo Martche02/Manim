@@ -373,8 +373,8 @@ totalmente pintado de cinza.''', font_size=30)
     def p2021n3q6(self):
         class m:
             def __init__(self, selfE, n:str, r, todas_caras:bool=False):
-                self.coroa = [PURPLE, YELLOW][todas_caras]
-                self.cara = [YELLOW, PURPLE][todas_caras]
+                self.coroa = [YELLOW, PURPLE][todas_caras]
+                self.cara = [PURPLE, YELLOW][todas_caras]
                 self.r = r
                 self.selfE = selfE
                 self.face = self.moeda(n)
@@ -418,98 +418,117 @@ totalmente pintado de cinza.''', font_size=30)
                 self.pos -= 1
                 self.pos %= 10
                 return self.mesa
-            
-#         enunciado = Tex('''(OBMEP 2021N3Q6 ADAPTADA) São dispostas 10 moedas em um círculo.
-# Inicialmente, todas as dez moedas são colocadas com a face coroa voltada para cima e um
-# ponteiro aponta para a posição A. 
-# \n\n Esse ponteiro começa a se movimentar no sentido anti-horário,
-# saltando de uma posição para a outra mais próxima. 
-# Após cada salto,
-# \n      • Se o ponteiro apontar para uma moeda
-# com a face cara para cima, nada acontece;
-# \n      • Se o ponteiro apontar para uma moeda
-# com a face coroa para cima, deve-se, então,
-# virar a moeda seguinte.''', font_size=23, tex_environment="flushleft", width=400)
-#         self.play(Create(enunciado))
-#         self.play(enunciado.animate.shift(UP*2.5))
-#         e = c(self, DOWN, 1.5)
-#         +e
-#         +e
-#         +e
-#         +e
-#         -e
-#         -e
-#         self.next_slide()
-#         self.play(FadeOut(enunciado, e.mesa))
-
-#         A = Tex('''A) Como ficarão as moedas nas posições C e D logo após o segundo salto do ponteiro?''', font_size=30)
-#         self.play(Create(A))
-#         self.next_slide()
-#         self.play(A.animate.shift(UP*3))
-#         self.next_slide()
-#         a = c(self, UR+DL)
-#         +a
-#         self.next_slide()
-#         +a
-#         self.next_slide()
-#         self.play(FadeOut(A, a.mesa))
-
-#         B = Tex('''B) Em quais posições as moedas ficarão com as faces coroa para cima após o décimo segundo salto?''', font_size=30)
-#         self.play(Create(B))
-#         self.next_slide()
-#         self.play(B.animate.shift(UP*3))
-#         self.next_slide()
-#         b = c(self, UR+DL)
-#         +b
-#         self.next_slide()
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         +b
-#         self.next_slide()
-#         self.play(FadeOut(B, b.mesa))
-
-#         C = Tex('''C) Explique por que nunca todas as moedas ficarão com a face cara voltada para cima''', font_size = 30)
-#         self.play(Create(C))
-#         self.next_slide()
-#         self.play(C.animate.shift(UP*3))
-#         self.next_slide()
-#         c1 = c(self, UR+DL)
-#         +c1
-#         +c1
-#         +c1
-#         +c1
-#         +c1
-#         +c1
-#         +c1
-#         self.next_slide()
-#         -c1
-#         self.next_slide()
-#         -c1
-#         self.next_slide()
-#         -c1
-#         -c1
-#         self.next_slide()
-#         self.play(FadeOut(c1.mesa))
-#         c2 = c(self, UR+DL, todas_caras=True)
-#         +c2
-#         -c2
-#         -c2
-#         -c2
-#         self.next_slide()
-#         RAA = Tex("Terminar com caras implica começar com caras", font_size=35).shift(DOWN*3)
-#         self.play(Create(RAA))
-#         self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
-# \n         nunca acabará com caras - Reductio ad Absurdum''', font_size=50)))
-        
-        D = Tex('''D) Explique por que todas as moedas voltarão a ser simultaneamente coroa após algum momento''', font_size=30)
+        enunciado = Tex('''(OBMEP 2021N3Q6 ADAPTADA) São dispostas 10 moedas em um círculo.
+Inicialmente, todas as dez moedas são colocadas com a face coroa voltada para cima e um
+ponteiro aponta para a posição A. 
+\n\n Esse ponteiro começa a se movimentar no sentido anti-horário,
+saltando de uma posição para a outra mais próxima. 
+Após cada salto,
+\n      • Se o ponteiro apontar para uma moeda
+com a face cara para cima, nada acontece;
+\n      • Se o ponteiro apontar para uma moeda
+com a face coroa para cima, deve-se, então,
+virar a moeda seguinte ''', font_size=23, tex_environment="flushleft", width=400)
+        self.play(Create(enunciado))
+        self.next_slide()
+        self.play(enunciado.animate.shift(UP*2.5))
+        self.next_slide()
+        e = c(self, DOWN, 1.5)
+        self.next_slide()
+        +e
+        self.next_slide()
+        +e
+        self.next_slide()
+        +e
+        self.next_slide()
+        +e
+        +e
+        +e
+        self.next_slide()
+        self.play(FadeOut(enunciado, e.mesa))
+        A = Tex('''A) Como ficarão as moedas nas posições C e D logo após o segundo salto do ponteiro? ''', font_size=30)
+        self.play(Create(A))
+        self.next_slide()
+        self.play(A.animate.shift(UP*3))
+        self.next_slide()
+        a = c(self, UR+DL)
+        self.next_slide()
+        +a
+        a.mesa[3].set_color(PURPLE)
+        self.next_slide()
+        +a
+        self.next_slide()
+        self.play(FadeOut(A, a.mesa))
+        self.next_slide()
+        B = Tex('''B) Em quais posições as moedas ficarão com as faces coroa para cima após o décimo segundo salto? ''', font_size=30)
+        self.play(Create(B))
+        self.next_slide()
+        self.play(B.animate.shift(UP*3))
+        self.next_slide()
+        b = c(self, UR+DL)
+        self.next_slide()
+        +b
+        self.next_slide()
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        +b
+        b.mesa[4].set_color(PURPLE)
+        self.next_slide()
+        self.play(FadeOut(B, b.mesa))
+        self.next_slide()
+        C = Tex('''C) Explique por que nunca todas as moedas ficarão com a face cara voltada para cima ''', font_size = 30)
+        self.play(Create(C))
+        self.next_slide()
+        self.play(C.animate.shift(UP*3))
+        self.next_slide()
+        c1 = c(self, UR+DL)
+        self.next_slide()
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        self.next_slide()
+        -c1
+        self.next_slide()
+        -c1
+        self.next_slide()
+        -c1
+        self.next_slide()
+        -c1
+        c1.mesa[5].set_color(YELLOW)
+        self.next_slide()
+        self.play(FadeOut(c1.mesa))
+        self.next_slide()
+        c2 = c(self, UR+DL, todas_caras=True)
+        self.next_slide()
+        +c2
+        self.next_slide()
+        -c2
+        self.next_slide()
+        -c2
+        self.next_slide()
+        -c2
+        self.next_slide()
+        RAA = Tex("Terminar com caras implica começar com caras ", font_size=35).shift(DOWN*3)
+        self.play(Create(RAA))
+        self.next_slide()
+        self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
+\n         nunca acabará com caras - Reductio ad Absurdum ''', font_size=50)))
+        self.next_slide()
+        self.play(*[FadeOut(mob)for mob in self.mobjects])
+        self.next_slide()
+        D = Tex('''D) Explique por que todas as moedas voltarão a ser simultaneamente coroa após algum momento ''', font_size=30)
         self.play(Create(D))
         self.next_slide()
         self.play(D.animate.shift(UP*3))
@@ -517,27 +536,38 @@ totalmente pintado de cinza.''', font_size=30)
         d = c(self, UP+DOWN)
         d1 = d.mesa.copy()
         tE = VGroup()
-        tE.add(Tex(r"$E_1$", font_size=40))
-        self.play(Transform(d1, tE[0].move_to(DL*3)))
+        tE.add(Tex(r"$E_1$", font_size=40).next_to(DL*3+LEFT*0.4))
+        self.next_slide()
+        self.play(Transform(d1, tE[0]))
+        self.next_slide()
         +d
         d2 = d.mesa.copy()
-        tE.add(Tex(r"$\rightarrow E_2$", font_size=40))
-        self.play(Transform(d2, tE[1].move_to(tE[0], 2*LEFT)))
+        tE.add(Tex(r"$\rightarrow E_2$", font_size=40).next_to(tE[0], RIGHT))
+        self.play(Transform(d2, tE[1]))
+        self.next_slide()
         +d
         d3 = d.mesa.copy()
-        tE.add(Tex(r"$\rightarrow E_3$", font_size=40))
-        self.play(Transform(d3, tE[2].move_to(tE[1], 2*LEFT)))
+        tE.add(Tex(r"$\rightarrow E_3$", font_size=40).next_to(tE[1], RIGHT))
+        self.play(Transform(d3, tE[2]))
+        self.next_slide()
         +d
         d4 = d.mesa.copy()
-        tE.add(Tex(r"$\rightarrow E_4$", font_size=40))
-        self.play(Transform(d4, tE[3].move_to(tE[2], 2*LEFT)))
-        tE.add(Tex(r"$\rightarrow E_n \rightarrow \cdots$"))
-        self.play(Create(tE[4].move_to(tE[3], 2*LEFT)))
-
+        tE.add(Tex(r"$\rightarrow E_4$", font_size=40).next_to(tE[2], RIGHT))
+        self.play(Transform(d4, tE[3]))
+        self.next_slide()
+        tE.add(Tex(r"$\rightarrow \cdots \rightarrow E_n$").next_to(tE[3], RIGHT))
+        self.play(Create(tE[4]))
+        self.next_slide()
         self.play(FadeOut(d.mesa))
-        self.play(tE.animate.shift(UP*3))
-        CurvedArrow(tE[-1].get_coord(2), tE[0].get_coord(2))
-
+        self.play(VGroup(d1, d2, d3, d4,tE).animate.shift(UP*3))
+        self.next_slide()
+        conc = Tex(r'''$E_n \rightarrow E_2$ é o primeiro sucessor repetido $\Rightarrow E_n = E_1$ ''')
+        conclusao =VGroup(conc, Tex(r'''$\Rightarrow E_{n-1} \rightarrow E_n$ é o primeiro sucessor repetido (Absurdo) ''').next_to(conc, DOWN))
+        self.play(Create(conclusao.move_to(DOWN*3)))
+        self.next_slide()
+        self.play(Create(CurvedArrow(RIGHT*3.2+UP/2, LEFT*1.6+UP/2)))
+        self.next_slide()
+        self.play(Create(CurvedArrow(LEFT*2.9+UP/2, LEFT*1.9+UP/2, angle=-PI/2)))
 
     def construct(self):
         self.p2021n3q6()
