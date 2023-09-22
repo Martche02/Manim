@@ -509,8 +509,13 @@ totalmente pintado de cinza.''', font_size=30)
         self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
 \n         nunca acabará com caras - Reductio ad Absurdum''', font_size=50)))
         
-        D = Tex('''D) Explique por que todas as moedas voltaram a ser simultaneamente coroa após algum momento''')
+        D = Tex('''D) Explique por que todas as moedas voltarão a ser simultaneamente coroa após algum momento''', font_size=30)
+        self.play(Create(D))
+        self.next_slide()
+        self.play(D.animate.shift(UP*3))
+        self.next_slide()
         
+
 
 
 
