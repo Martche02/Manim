@@ -476,49 +476,67 @@ totalmente pintado de cinza.''', font_size=30)
 #         self.next_slide()
 #         self.play(FadeOut(B, b.mesa))
 
-        C = Tex('''C) Explique por que nunca todas as moedas ficarão com a face cara voltada para cima''', font_size = 30)
-        self.play(Create(C))
-        self.next_slide()
-        self.play(C.animate.shift(UP*3))
-        self.next_slide()
-        c1 = c(self, UR+DL)
-        +c1
-        +c1
-        +c1
-        +c1
-        +c1
-        +c1
-        +c1
-        self.next_slide()
-        -c1
-        self.next_slide()
-        -c1
-        self.next_slide()
-        -c1
-        -c1
-        self.next_slide()
-        self.play(FadeOut(c1.mesa))
-        c2 = c(self, UR+DL, todas_caras=True)
-        +c2
-        -c2
-        -c2
-        -c2
-        self.next_slide()
-        RAA = Tex("Terminar com caras implica começar com caras", font_size=35).shift(DOWN*3)
-        self.play(Create(RAA))
-        self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
-\n         nunca acabará com caras - Reductio ad Absurdum''', font_size=50)))
+#         C = Tex('''C) Explique por que nunca todas as moedas ficarão com a face cara voltada para cima''', font_size = 30)
+#         self.play(Create(C))
+#         self.next_slide()
+#         self.play(C.animate.shift(UP*3))
+#         self.next_slide()
+#         c1 = c(self, UR+DL)
+#         +c1
+#         +c1
+#         +c1
+#         +c1
+#         +c1
+#         +c1
+#         +c1
+#         self.next_slide()
+#         -c1
+#         self.next_slide()
+#         -c1
+#         self.next_slide()
+#         -c1
+#         -c1
+#         self.next_slide()
+#         self.play(FadeOut(c1.mesa))
+#         c2 = c(self, UR+DL, todas_caras=True)
+#         +c2
+#         -c2
+#         -c2
+#         -c2
+#         self.next_slide()
+#         RAA = Tex("Terminar com caras implica começar com caras", font_size=35).shift(DOWN*3)
+#         self.play(Create(RAA))
+#         self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
+# \n         nunca acabará com caras - Reductio ad Absurdum''', font_size=50)))
         
         D = Tex('''D) Explique por que todas as moedas voltarão a ser simultaneamente coroa após algum momento''', font_size=30)
         self.play(Create(D))
         self.next_slide()
         self.play(D.animate.shift(UP*3))
         self.next_slide()
-        
+        d = c(self, UP+DOWN)
+        d1 = d.mesa.copy()
+        tE = VGroup()
+        tE.add(Tex(r"$E_1$", font_size=40))
+        self.play(Transform(d1, tE[0].move_to(DL*3)))
+        +d
+        d2 = d.mesa.copy()
+        tE.add(Tex(r"$\rightarrow E_2$", font_size=40))
+        self.play(Transform(d2, tE[1].move_to(tE[0], 2*LEFT)))
+        +d
+        d3 = d.mesa.copy()
+        tE.add(Tex(r"$\rightarrow E_3$", font_size=40))
+        self.play(Transform(d3, tE[2].move_to(tE[1], 2*LEFT)))
+        +d
+        d4 = d.mesa.copy()
+        tE.add(Tex(r"$\rightarrow E_4$", font_size=40))
+        self.play(Transform(d4, tE[3].move_to(tE[2], 2*LEFT)))
+        tE.add(Tex(r"$\rightarrow E_n \rightarrow \cdots$"))
+        self.play(Create(tE[4].move_to(tE[3], 2*LEFT)))
 
-
-
-
+        self.play(FadeOut(d.mesa))
+        self.play(tE.animate.shift(UP*3))
+        CurvedArrow(tE[-1].get_coord(2), tE[0].get_coord(2))
 
 
     def construct(self):
