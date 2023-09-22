@@ -85,8 +85,8 @@ class MatEmVideo(Slide): #Scene or Slide
             dots = [LabeledDot(str((p+lap)%self.horas+1)).move_to(points[p]) for p in range(self.horas)]
             return VGroup(*dots)
     def pause(self):
-        # self.wait()
-        self.next_slide()
+        self.wait()
+        # self.next_slide()
     def cap1(self):
         p = self.pause
         self.number_line = NumberLine([-30,30], include_numbers=True, label_direction=UP)
@@ -170,8 +170,352 @@ class MatEmVideo(Slide): #Scene or Slide
         self.remove(P)
         self.play(Transform(VGroup(*S), MathTex("4").move_to(self.number_line.number_to_point(0)+DOWN)))
 
+    def p2016n1q6(self):
+        def anel(cores:list, m:float, n:float, d:bool=False, centro=0, p:bool=False):
+            cores=cores[::-1]
+            a = VGroup()
+            for i in range(len(cores)):
+                a.add(AnnularSector(color=[WHITE, GRAY][cores[i]], start_angle=(5-i)*PI/3+[PI/6,0][d], angle=PI/3,
+                                     inner_radius=m, outer_radius=n, stroke_color=BLACK, stroke_width=1))
+            return a.move_to(DOWN*centro)
+        def arco(i, f, color):
+            d = Dot()
+            c = Arc(1.5, i, f-i)
+            d.set_color(color)
+            c2 = VMobject()
+            self.add(d, c, c2)
+            c2.add_updater(lambda x: x.become(ArcBetweenPoints(d.get_center(), self.rotate_vector(RIGHT*1.5, i), radius=1.5).set_color(color)))
+            self.play(MoveAlongPath(d, c), rate_func=linear)
+            self.remove(d)
+            self.remove(c)
+            return c2
+        def juncao(a, i=1, o=2):
+            return AnnularSector(i, o, 0.01, a, color=BLACK, stroke_color=BLACK, stroke_width=1)
+        def percurso3(a, b, c):
+            c3 = VGroup()
+            c3.add(juncao(a))
+            c3.add(juncao(b))
+            c3.add(juncao(c))
+            self.play(Create(c3[0]))
+            self.play(Create(c3[1]))
+            self.play(Create(c3[2]))
+            self.pause()
+            c3.add(arco(0,a, YELLOW))
+            c3.add(arco(a, b, PURPLE))
+            c3.add(arco(b, c, YELLOW))
+            c3.add(arco(c, -11*TAU/12, PURPLE))
+            self.pause()
+            self.remove(*[c3[i] for i in range(len(c3))])
+        def percurso2(a, b):
+            c2 = VGroup()
+            c2.add(juncao(a))
+            c2.add(juncao(b))
+            self.play(Create(c2[0]))
+            self.play(Create(c2[1]))
+            self.pause()
+            c2.add(arco(0,a, YELLOW))
+            c2.add(arco(a, b, PURPLE))
+            c2.add(arco(b, -11*TAU/12, YELLOW))
+            self.pause()
+            self.remove(*[c2[i] for i in range(len(c2))])
+        def percurso1(a):
+            c = VGroup()
+            c.add(juncao(a))
+            self.play(Create(c[0]))
+            self.pause()
+            c.add(arco(0,a, YELLOW))
+            c.add(arco(a, -11*TAU/12, PURPLE))
+            self.pause()
+            self.remove(*[c[i] for i in range(len(c))])
+        enunciado = Tex('''(OBMEP 2016N1Q6 ADAPTADA) Joãozinho pinta anéis encaixados, 
+cada um deles dividido em seis partes iguais.
+No primeiro anel (o menor deles) Joãozinho pinta de cinza algumas partes.
+Do segundo anel em diante, ele pinta de cinza somente
+as partes em contato com duas partes de cores diferentes do anel anterior.
+Observe um exemplo:''', font_size=30)
+        self.play(Create(enunciado))
+        self.pause()
+        self.play(enunciado.animate.shift(UP*3))
+        self.pause()
+        en = VGroup(enunciado, anel([0,1,0,1,0,0], 0.7, 1.2, False, 1.2), anel([0,1,1,1,1,0], 1.2, 1.7, True , 1.2),
+                    anel([0,1,0,0,1,0], 1.7, 2.2, False, 1.2), anel([0,1,1,0,1,1], 2.2, 2.7, True , 1.2))
+        self.play(Create(en[1]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(en[2]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(en[3]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(en[4]))
+        self.next_slide()
+        self.pause()
+        self.play(FadeOut(en))
+        self.next_slide()
+        self.pause()
+        A = Tex('''A) Joãozinho pintou o primeiro 
+anel conforme a figura abaixo.
+Continue o trabalho de Joãozinho, pintando,
+na mesma figura, o segundo e o terceiro anéis''', font_size=30)
+        self.play(Create(A))
+        self.pause()
+        self.play(A.animate.shift(UP*3))
+        self.pause()
+        iA = VGroup(A, anel([1,0,1,0,0,1], 0.7, 1.2, False, 0.8, True), anel([0,1,1,1,0,1], 1.2, 1.7, True , 0.8, True),
+                    anel([1, 0, 0, 1, 1, 1], 1.7, 2.2, False, 0.8, True))
+        self.play(Create(iA[1]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(iA[2]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(iA[3]))
+        self.next_slide()
+        self.pause()
+        self.play(FadeOut(iA))
+        self.next_slide()
+        self.pause()
+        B = Tex('''B) Na figura abaixo, pinte as partes do primeiro anel de modo que o segundo anel fique todo pintado de cinza''', font_size=30)
+        self.play(Create(B))
+        self.pause()
+        self.play(B.animate.shift(UP*3))
+        self.pause()
+        iB = VGroup(B, anel([1,1,1,1,1,1], 1.2, 1.7, True, 0.8), anel([1,0,1,0,1,0], 0.7, 1.2, False, 0.8),
+                    anel([0,1,0,1,0,1], 0.7, 1.2, False, 0.8), anel([0,0,0,0,0,0], 0.7, 1.2, False, 0.8))
+        self.play(Create(iB[4]))
+        self.next_slide()
+        self.play(Create(iB[1]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(iB[2]))
+        self.next_slide()
+        self.pause()
+        self.play(FadeOut(iB[2]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(iB[3]))
+        self.next_slide()
+        self.pause()
+        self.play(FadeOut(iB))
+        self.pause()
+        C = Tex('''C) Explique por que, independentemente de como Joãozinho pintar o primeiro anel, os demais anéis sempre terão uma
+quantidade par de partes pintadas de cinza.''', font_size=30)
+        self.play(Create(C))
+        self.pause()
+        self.play(C.animate.shift(UP*3))
+        self.pause()
+        iC = VGroup()
+        iC.add(Tex('''O que cria uma parte cinza?''', font_size=30))
+        iC.add(Tex('''Junção entre cinza e branco''', font_size=30))
+        iC.add(Tex('''Pode ter uma quantidade impar de junções?''', font_size=30))
+        iC.add(Tex('''Implicaria cor Inicial a ser Cinza e Branca, contradição''', font_size=30))
+        iC.add(Tex('''Reductio ad Absurdum''', font_size=30))
+        self.play(iC[0].animate.shift(LEFT*3))
+        iC[1].next_to(iC[0], RIGHT)
+        self.pause()
+        self.play(Create(iC[1]))
+        self.pause()
+        iC[2].next_to(iC[0], DOWN*2)
+        self.play(Create(iC[2]))
+        self.pause()
+        self.play(FadeOut(C, iC[0], iC[1], iC[2]))
+        self.pause()
+        iC.add(AnnularSector(1, 2, TAU, color=WHITE))
+        iC.add(AnnularSector(1, 2, TAU/6, color=YELLOW, stroke_color=BLACK, stroke_width=1))
+        self.pause()
+        self.next_slide()
+        self.play(*[Create(iC[-2]), Create(iC[-1])])
+        percurso1(-TAU/2)
+        self.next_slide()
+        self.pause
+        percurso3(-TAU/3, -TAU/2, -2*TAU/3)
+        self.pause()
+        self.next_slide()
+        percurso2(-TAU/3, -2*TAU/3)
+        self.pause()
+        self.next_slide()
+        self.play(FadeOut(iC[-2], iC[-1]))
+        self.next_slide()
+        self.pause()
+        self.play(Create(C))
+        iC[3].next_to(iC[2])
+        self.play(iC[3].animate.shift(DOWN+LEFT*2))
+        self.play(*[Create(iC[i]) for i in [0,1,2]])
+        iC[4].next_to(iC[2], DOWN*5)
+        self.pause()
+        self.play(Create(iC[4]))
+        self.next_slide()
+        self.play(FadeOut(iC[0], iC[1], iC[2], iC[3], iC[4]))
+        self.remove(C)
+        D = Tex('''D) Explique por que, independentemente de como Joãozinho pintar o primeiro anel, nenhum anel a partir do terceiro será
+totalmente pintado de cinza.''', font_size=30)
+        self.play(Create(D))
+        self.pause()
+        self.play(D.animate.shift(UP*3))
+        self.pause()
+        iD = VGroup()
+        iD.add(Tex('''O que cria um aro todo cinza?''', font_size=30))
+        iD.add(Tex('''O Item B)''', font_size=30))
+        iD.add(Tex('''O que cria B)?''', font_size=30))
+        iD.add(Tex('''Uma quantidade ímpar de junções, impossível por C)''', font_size=30))
+        self.play(iD[0].animate.shift(LEFT*3))
+        iD[1].next_to(iD[0], RIGHT)
+        self.pause()
+        self.play(Create(iD[1]))
+        self.pause()
+        iD[2].next_to(iD[0], DOWN*2)
+        self.play(Create(iD[2]))
+        self.pause()
+        iD[3].next_to(iD[2])
+        self.play(Create(iD[3]))
+
+    def p2021n3q6(self):
+        class m:
+            def __init__(self, selfE, n:str, r, todas_caras:bool=False):
+                self.coroa = [PURPLE, YELLOW][todas_caras]
+                self.cara = [YELLOW, PURPLE][todas_caras]
+                self.r = r
+                self.selfE = selfE
+                self.face = self.moeda(n)
+                self.f = not todas_caras
+            def __neg__(self) -> VGroup:
+                self.selfE.play(self.face.animate.flip(UP))
+                self.face.set_color(self.cara) if self.f else self.face.set_color(self.coroa)
+                self.f = not self.f
+                return self.face
+            def __pos__(self) -> VGroup:
+                self.selfE.play(self.face.animate.flip(DOWN))
+                self.selfE.play(self.face.animate.flip(DOWN))
+                return self.face
+            def moeda(self, n:str) -> VGroup:
+                return VGroup(Circle(self.r), Tex(str(n))).set_color(self.coroa)
+            def move_to(self, add):
+                self.face.move_to(add)
+        class c:
+            def __init__(self, selfE, p0, r:int=2, todas_caras:bool=False):
+                self.p0 = p0
+                self.mesa = VGroup()
+                self.circ = Circle(r).move_to(p0)
+                self.mesa.add(Arrow(self.p0, RIGHT*r*3/4+self.p0))
+                self.pos = 0
+                self.mesa_de_valores = []
+                for i in range(10):
+                    a = m(selfE, ['A','B','C','D','E','F','G','H','I','J'][i], r/4, todas_caras=todas_caras)
+                    self.mesa_de_valores.append(a)
+                    self.mesa.add(a.face.move_to(self.circ.point_at_angle(i*TAU/10)))
+                selfE.play(Create(self.mesa))
+                self.selfE = selfE
+            def __pos__(self) -> VGroup:
+                self.pos +=1
+                self.pos %=10
+                self.selfE.play(self.mesa[0].animate.rotate(TAU/10, about_point=self.p0))
+                -self.mesa_de_valores[(self.pos+1)%10] if self.mesa_de_valores[self.pos].f else +self.mesa_de_valores[(self.pos+1)%10]
+                return self.mesa
+            def __neg__(self) -> VGroup:
+                -self.mesa_de_valores[(self.pos+1)%10] if self.mesa_de_valores[self.pos].f else +self.mesa_de_valores[(self.pos+1)%10]
+                self.selfE.play(self.mesa[0].animate.rotate(-TAU/10, about_point=self.p0))
+                self.pos -= 1
+                self.pos %= 10
+                return self.mesa
+            
+#         enunciado = Tex('''(OBMEP 2021N3Q6 ADAPTADA) São dispostas 10 moedas em um círculo.
+# Inicialmente, todas as dez moedas são colocadas com a face coroa voltada para cima e um
+# ponteiro aponta para a posição A. 
+# \n\n Esse ponteiro começa a se movimentar no sentido anti-horário,
+# saltando de uma posição para a outra mais próxima. 
+# Após cada salto,
+# \n      • Se o ponteiro apontar para uma moeda
+# com a face cara para cima, nada acontece;
+# \n      • Se o ponteiro apontar para uma moeda
+# com a face coroa para cima, deve-se, então,
+# virar a moeda seguinte.''', font_size=23, tex_environment="flushleft", width=400)
+#         self.play(Create(enunciado))
+#         self.play(enunciado.animate.shift(UP*2.5))
+#         e = c(self, DOWN, 1.5)
+#         +e
+#         +e
+#         +e
+#         +e
+#         -e
+#         -e
+#         self.next_slide()
+#         self.play(FadeOut(enunciado, e.mesa))
+
+#         A = Tex('''A) Como ficarão as moedas nas posições C e D logo após o segundo salto do ponteiro?''', font_size=30)
+#         self.play(Create(A))
+#         self.next_slide()
+#         self.play(A.animate.shift(UP*3))
+#         self.next_slide()
+#         a = c(self, UR+DL)
+#         +a
+#         self.next_slide()
+#         +a
+#         self.next_slide()
+#         self.play(FadeOut(A, a.mesa))
+
+#         B = Tex('''B) Em quais posições as moedas ficarão com as faces coroa para cima após o décimo segundo salto?''', font_size=30)
+#         self.play(Create(B))
+#         self.next_slide()
+#         self.play(B.animate.shift(UP*3))
+#         self.next_slide()
+#         b = c(self, UR+DL)
+#         +b
+#         self.next_slide()
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         +b
+#         self.next_slide()
+#         self.play(FadeOut(B, b.mesa))
+
+        C = Tex('''C) Explique por que nunca todas as moedas ficarão com a face cara voltada para cima''', font_size = 30)
+        self.play(Create(C))
+        self.next_slide()
+        self.play(C.animate.shift(UP*3))
+        self.next_slide()
+        c1 = c(self, UR+DL)
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        +c1
+        self.next_slide()
+        -c1
+        self.next_slide()
+        -c1
+        self.next_slide()
+        -c1
+        -c1
+        self.next_slide()
+        self.play(FadeOut(c1.mesa))
+        c2 = c(self, UR+DL, todas_caras=True)
+        +c2
+        -c2
+        -c2
+        -c2
+        self.next_slide()
+        RAA = Tex("Terminar com caras implica começar com caras", font_size=35).shift(DOWN*3)
+        self.play(Create(RAA))
+        self.play(Transform(VGroup(RAA, c2.mesa), Tex('''Começar com coroas e terminar com caras é impossível;
+\n         nunca acabará com caras - Reductio ad Absurdum''', font_size=50)))
+        
+        D = Tex('''D) Explique por que todas as moedas voltaram a ser simultaneamente coroa após algum momento''')
+        
+
+
+
 
 
     def construct(self):
-        self.cap1()
+        self.p2021n3q6()
         self.wait()
